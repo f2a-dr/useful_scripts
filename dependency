@@ -1,0 +1,53 @@
+#!/bin/bash
+
+folder=UB75_sr0.5_big_long
+jobname=sr0.5_big
+n_id=0
+end=8
+N_steps=3000000
+steps_regular=400000
+steps_final=$((steps_regular-steps_regular*end+N_steps))
+
+echo $N_steps
+echo $steps_regular
+echo $steps_final
+
+for i in $(seq $end); do
+	j=$((i-1))
+	curr_fold=$folder\_$j
+	echo "### Copy $j folder"
+	cp -r $folder $curr_fold
+	if [ $j -eq 0 ]; then
+		echo "    Change SLES_CMEA.sbatch in $curr_fold"
+		prepend="read_restart    equilibrated remap"
+		depend="#SBATCH --dependency=afterok:"
+		sed -i "/^$depend.*/ s;^;#;" $curr_fold/SLES_CMEA.sbatch
+		sed -i "/^PREVIOUS_BCK=.*/ s;^;#;" $curr_fold/SLES_CMEA.sbatch
+		sed -i "/^cp \$PREVIOUS_BCK.*/ s;^;#;" $curr_fold/SLES_CMEA.sbatch
+	else
+		echo "    Change SLES_CMEA.sbatch in $curr_fold"
+		prepend="read_restart    restart_$((j-1)) remap"
+		depend="#SBATCH --dependency=afterok:"
+		prv_bck="PREVIOUS_BCK=\"../$folder\_$((j-1))/restart\_$((j-1))\""
+		sed -i "/^$depend/ s;$;$n_id;" $curr_fold/SLES_CMEA.sbatch
+		sed -i "s;PREVIOUS_BCK=.*;$prv_bck;" $curr_fold/SLES_CMEA.sbatch
+	fi
+	sbatch_name="#SBATCH --job-name="
+	echo "    Update job name in $curr_fold"
+	sed -i "/^$sbatch_name/ s;$;$jobname\_$j;" $curr_fold/SLES_CMEA.sbatch
+	echo "    Change in.restart in $curr_fold"
+	sed -i "1s;^;$prepend\n;" $curr_fold/in.restart
+	if [ $i -eq $end ]; then
+		echo "run    $steps_final" >> $curr_fold/in.restart
+	else
+		echo "run    $steps_regular" >> $curr_fold/in.restart
+	fi
+	echo "write_restart   restart_$j" >> $curr_fold/in.restart
+        echo "Entering in $curr_fold directory"
+        cd $curr_fold
+	echo "Launching the simulation through slurm"
+	n_id=$(sbatch SLES_CMEA.sbatch | grep -Eo ['0-9']+)
+	echo "Job number $i launched, job id = $n_id"
+        echo "Exit from  $curr_fold directory"
+        cd ..
+done

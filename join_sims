@@ -1,0 +1,43 @@
+#!/bin/bash
+
+folder=UB75_sr0.01_medium_long
+end=3
+eq_steps=1200200
+N_steps=3000000
+steps_regular=1000000
+steps_final=$((steps_regular-steps_regular*end+N_steps))
+
+for i in $(seq $end); do
+	j=$((i-1))
+	main_fold=$folder\_0
+	curr_fold=$folder\_$j
+	header="   Step          Temp       c_tstat_temp      Press           Pxy           v_visc         f_vave"
+	if [ $i -ne $end ]; then
+		foot=$((eq_steps+i*steps_regular))
+	else
+		foot=$((eq_steps+j*steps_regular+steps_final))
+	fi
+	echo $header
+	echo $foot
+	echo -e "\n### Entering in $curr_fold directory ###"
+	cd $curr_fold
+	echo "Extracting results"
+	cp log.lammps nonEqResults.dat
+	sed -i '/'"$header"'/,$!d' nonEqResults.dat
+	sed -i '/'"$foot"'/q' nonEqResults.dat
+	if [ $j -gt 0 ]; then
+		echo "Appending results to main folder"
+		echo "1. Thermo results..."
+		tail -n +3 nonEqResults.dat >> ../$main_fold/nonEqResults.dat
+		echo "...done"
+		echo "2. Velocty profiles..."
+		tail -n +4 velocity_profile.dat >> ../$main_fold/velocity_profile.dat
+		echo "...done"
+		echo "2. Beads trajectories..."
+		cat all.lammpstrj >> ../$main_fold/all.lammpstrj
+		echo "...done"
+	fi
+	echo -e "### Exit from $curr_fold directory ###\n"
+	cd ..
+done
+
