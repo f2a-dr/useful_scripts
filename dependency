@@ -1,11 +1,11 @@
 #!/bin/bash
 
-folder=UB75_sr0.5_big_long
-jobname=sr0.5_big
+folder=UB75_sr1_medium_long
+jobname=sr1_medium
 n_id=0
-end=8
-N_steps=3000000
-steps_regular=400000
+end=6
+N_steps=6000000
+steps_regular=1000000
 steps_final=$((steps_regular-steps_regular*end+N_steps))
 
 echo $N_steps
@@ -18,24 +18,28 @@ for i in $(seq $end); do
 	echo "### Copy $j folder"
 	cp -r $folder $curr_fold
 	if [ $j -eq 0 ]; then
-		echo "    Change SLES_CMEA.sbatch in $curr_fold"
 		prepend="read_restart    equilibrated remap"
 		depend="#SBATCH --dependency=afterok:"
+		echo "    Handling dependency in $curr_fold"
 		sed -i "/^$depend.*/ s;^;#;" $curr_fold/SLES_CMEA.sbatch
+		echo "    Disabling previous backup in $curr_fold"
 		sed -i "/^PREVIOUS_BCK=.*/ s;^;#;" $curr_fold/SLES_CMEA.sbatch
 		sed -i "/^cp \$PREVIOUS_BCK.*/ s;^;#;" $curr_fold/SLES_CMEA.sbatch
 	else
-		echo "    Change SLES_CMEA.sbatch in $curr_fold"
 		prepend="read_restart    restart_$((j-1)) remap"
 		depend="#SBATCH --dependency=afterok:"
 		prv_bck="PREVIOUS_BCK=\"../$folder\_$((j-1))/restart\_$((j-1))\""
+		echo "    Handling dependency in $curr_fold"
 		sed -i "/^$depend/ s;$;$n_id;" $curr_fold/SLES_CMEA.sbatch
+		echo "    Setting previous backup in $curr_fold"
 		sed -i "s;PREVIOUS_BCK=.*;$prv_bck;" $curr_fold/SLES_CMEA.sbatch
+		echo "    Disabling imposition of initial velocity profile in $curr_fold"
+		sed -i "/^velocity.*/ s;^;#;" $curr_fold/in.restart
 	fi
 	sbatch_name="#SBATCH --job-name="
 	echo "    Update job name in $curr_fold"
 	sed -i "/^$sbatch_name/ s;$;$jobname\_$j;" $curr_fold/SLES_CMEA.sbatch
-	echo "    Change in.restart in $curr_fold"
+	echo "    Changes in.restart in $curr_fold"
 	sed -i "1s;^;$prepend\n;" $curr_fold/in.restart
 	if [ $i -eq $end ]; then
 		echo "run    $steps_final" >> $curr_fold/in.restart
@@ -48,6 +52,6 @@ for i in $(seq $end); do
 	echo "Launching the simulation through slurm"
 	n_id=$(sbatch SLES_CMEA.sbatch | grep -Eo ['0-9']+)
 	echo "Job number $i launched, job id = $n_id"
-        echo "Exit from  $curr_fold directory"
-        cd ..
+	echo "Exit from  $curr_fold directory"
+	cd ..
 done
