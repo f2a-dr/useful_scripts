@@ -5,7 +5,7 @@ jobname=sr1_medium
 n_id=0
 end=6
 N_steps=6000000
-steps_regular=1000000
+steps_regular=900000
 steps_final=$((steps_regular-steps_regular*end+N_steps))
 
 echo $N_steps
@@ -13,6 +13,7 @@ echo $steps_regular
 echo $steps_final
 
 for i in $(seq $end); do
+	proc_write="processors	* * * file processor_grid.txt"
 	j=$((i-1))
 	curr_fold=$folder\_$j
 	echo "### Copy $j folder"
@@ -41,14 +42,15 @@ for i in $(seq $end); do
 	sed -i "/^$sbatch_name/ s;$;$jobname\_$j;" $curr_fold/SLES_CMEA.sbatch
 	echo "    Changes in.restart in $curr_fold"
 	sed -i "1s;^;$prepend\n;" $curr_fold/in.restart
+	sed -i "1s;^;$proc_write\n;" $curr_fold/in.restart
 	if [ $i -eq $end ]; then
 		echo "run    $steps_final" >> $curr_fold/in.restart
 	else
 		echo "run    $steps_regular" >> $curr_fold/in.restart
 	fi
 	echo "write_restart   restart_$j" >> $curr_fold/in.restart
-        echo "Entering in $curr_fold directory"
-        cd $curr_fold
+	echo "Entering in $curr_fold directory"
+	cd $curr_fold
 	echo "Launching the simulation through slurm"
 	n_id=$(sbatch SLES_CMEA.sbatch | grep -Eo ['0-9']+)
 	echo "Job number $i launched, job id = $n_id"
