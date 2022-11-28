@@ -1,16 +1,44 @@
 #!/bin/bash
 
+# Input
 folder=UB75_sr1_medium_long
 jobname=sr1_medium
 n_id=0
-end=6
-N_steps=6000000
-steps_regular=900000
-steps_final=$((steps_regular-steps_regular*end+N_steps))
+end=3
+N_steps=4000000
+steps_regular=1400000
+tot_sec_regular=69119
+incr=1.1
 
-echo $N_steps
-echo $steps_regular
-echo $steps_final
+# Calculation of the simulation time until the second last
+tot_sec_r=$(echo $incr*$tot_sec_regular/1+1 | bc)
+hrs_regular=$(echo $tot_sec_r/3600 | bc)
+min_regular=$(echo $tot_sec_r%3600/60 | bc)
+sec_regular=$(echo $tot_sec_r%60 | bc)
+time_regular=$(printf '#SBATCH --time=%02d:%02d:%02d\n' $((hrs_regular)) $((min_regular)) $((sec_regular)))
+
+# Calculation of the simulation time for the last one
+steps_final=$((steps_regular-steps_regular*end+N_steps))
+tot_sec_final=$(echo $tot_sec_regular*$steps_final/$steps_regular | bc)
+tot_sec_f=$(echo $incr*$tot_sec_final/1+1 | bc)
+hrs_final=$(echo $tot_sec_f/3600 | bc)
+min_final=$(echo $tot_sec_f%3600/60 | bc)
+sec_final=$(echo $tot_sec_f%60 | bc)
+time_final=$(printf '#SBATCH --time=%02d:%02d:%02d\n' $((hrs_final)) $((min_final)) $((sec_final)))
+
+# Checktest
+#echo "N_steps = $N_steps"
+#echo "Regular steps = $steps_regular"
+#echo "Total seconds per regular simulation = $tot_sec_r"
+#echo "Hours per regular = $hrs_regular"
+#echo "Minutes per regular = $min_regular"
+#echo "Seconds per regular = $sec_regular"
+#echo "Time per regular = $time_regular"
+#echo "Final steps = $steps_final"
+#echo "Hours per final = $hrs_final"
+#echo "Minutes per final = $min_final"
+#echo "Seconds per final = $sec_final"
+#echo "Time per final = $time_final"
 
 for i in $(seq $end); do
 	proc_write="processors	* * * file processor_grid.txt"
@@ -45,8 +73,10 @@ for i in $(seq $end); do
 	sed -i "1s;^;$proc_write\n;" $curr_fold/in.restart
 	if [ $i -eq $end ]; then
 		echo "run    $steps_final" >> $curr_fold/in.restart
+		sed -i "s;#SBATCH --time.*;$time_final;" $curr_fold/SLES_CMEA.sbatch
 	else
 		echo "run    $steps_regular" >> $curr_fold/in.restart
+		sed -i "s;#SBATCH --time.*;$time_regular;" $curr_fold/SLES_CMEA.sbatch
 	fi
 	echo "write_restart   restart_$j" >> $curr_fold/in.restart
 	echo "Entering in $curr_fold directory"
