@@ -79,11 +79,11 @@ for i in $(seq $end); do
 		sed -i "s;#SBATCH --time.*;$time_regular;" $curr_fold/SLES_CMEA.sbatch
 	fi
 	echo "write_restart   restart_$j" >> $curr_fold/in.restart
-	echo "Entering in $curr_fold directory"
+	echo "    Entering in $curr_fold directory"
 	cd $curr_fold
-	echo "Launching the simulation through slurm"
+	echo "    Launching the simulation through slurm"
 	n_id=$(sbatch SLES_CMEA.sbatch | grep -Eo ['0-9']+)
-	echo "Job number $i launched, job id = $n_id"
-	echo "Exit from  $curr_fold directory"
+	echo "    Job number $i launched, job id = $n_id"
+	echo "    Exit from  $curr_fold directory"
 	cd ..
 done
