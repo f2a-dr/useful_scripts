@@ -2,7 +2,7 @@
 
 folder=UB75_sr0.01_medium_long
 end=3
-eq_steps=1200200
+eq_steps=1200000
 N_steps=3000000
 steps_regular=1000000
 steps_final=$((steps_regular-steps_regular*end+N_steps))
@@ -11,7 +11,7 @@ for i in $(seq $end); do
 	j=$((i-1))
 	main_fold=$folder\_0
 	curr_fold=$folder\_$j
-	header="   Step          Temp       c_tstat_temp      Press           Pxy           v_visc         f_vave"
+	header="   Step          Temp       c_tstat_temp      Press           Pxy           v_visc"
 	if [ $i -ne $end ]; then
 		foot=$((eq_steps+i*steps_regular))
 	else
