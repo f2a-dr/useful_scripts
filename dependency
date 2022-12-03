@@ -63,22 +63,22 @@ for i in $(seq $end); do
 		echo "    Setting previous backup in $curr_fold"
 		sed -i "s;PREVIOUS_BCK=.*;$prv_bck;" $curr_fold/SLES_CMEA.sbatch
 		echo "    Disabling imposition of initial velocity profile in $curr_fold"
-		sed -i "/^velocity.*/ s;^;#;" $curr_fold/in.restart
+		sed -i "/^velocity.*/ s;^;#;" $curr_fold/in.LEBC_restart
 	fi
 	sbatch_name="#SBATCH --job-name="
 	echo "    Update job name in $curr_fold"
 	sed -i "/^$sbatch_name/ s;$;$jobname\_$j;" $curr_fold/SLES_CMEA.sbatch
-	echo "    Changes in.restart in $curr_fold"
-	sed -i "1s;^;$prepend\n;" $curr_fold/in.restart
-	sed -i "1s;^;$proc_write\n;" $curr_fold/in.restart
+	echo "    Changes in.LEBC_restart in $curr_fold"
+	sed -i "1s;^;$prepend\n;" $curr_fold/in.LEBC_restart
+	sed -i "1s;^;$proc_write\n;" $curr_fold/in.LEBC_restart
 	if [ $i -eq $end ]; then
-		echo "run    $steps_final" >> $curr_fold/in.restart
+		echo "run    $steps_final" >> $curr_fold/in.LEBC_restart
 		sed -i "s;#SBATCH --time.*;$time_final;" $curr_fold/SLES_CMEA.sbatch
 	else
-		echo "run    $steps_regular" >> $curr_fold/in.restart
+		echo "run    $steps_regular" >> $curr_fold/in.LEBC_restart
 		sed -i "s;#SBATCH --time.*;$time_regular;" $curr_fold/SLES_CMEA.sbatch
 	fi
-	echo "write_restart   restart_$j" >> $curr_fold/in.restart
+	echo "write_restart   restart_$j" >> $curr_fold/in.LEBC_restart
 	echo "    Entering in $curr_fold directory"
 	cd $curr_fold
 	echo "    Launching the simulation through slurm"
