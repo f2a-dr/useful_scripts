@@ -56,4 +56,4 @@ for i in range(len(howToPlot)):
     plt.legend()
 
     #plt.show()
-    fig[i].savefig("Residual_"+files[howToPlot[i][0]]+".pdf",dpi=300)
+    fig[i].savefig("Residual_"+fileout[i]+".pdf",dpi=300)
