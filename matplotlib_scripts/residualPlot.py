@@ -10,6 +10,7 @@ files = ["p_0", "p_1", "p_2", "Ux_0", "Uy_0", "Uz_0"]
 #Specify which residual will go in each plot
 #howToPlot = [3, 3]
 howToPlot = [[0, 1, 2], [3, 4, 5]]
+fileout = ["p", "U"]
 labels = [r"$p^0$", "$p^1$", "$p^2$", "$U_x^0$", "$U_y^0$", "$U_z^0$"]
 colors = ["tab:blue", "tab:orange", "tab:green", "tab:red", "tab:purple", "tab:brown", "tab:pink", "tab:grey", "tab:olive", "tab:cyan"]
 
