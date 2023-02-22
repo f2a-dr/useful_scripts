@@ -9,8 +9,8 @@ pics = ['polymer_stirredtank_Newt_nu_slice.png', 'polymer_stirredtank_GPR0_nu_sl
 fileout = 'test.pdf'
 
 # Initialize the labels and pictures for the axes
-ax = ['Newt', 'GPR0', 'GPR1']
 axlab = ['a)', 'b)', 'c)']
+ax = []
 axpic = []
 
 # Inizialize values for the colobar
@@ -35,11 +35,12 @@ plt.rcParams.update({
 # Start matplotib figure construction
 centimeters=1/2.54
 fig = plt.figure(figsize=(15*centimeters,5.3*centimeters), constrained_layout=True)
-gs = fig.add_gridspec(1,3, wspace=-0.5)
+gs = fig.add_gridspec(1,len(pics), wspace=-0.5)
 
 
 # The same operation are applied to every axes
-for i in range(len(ax)):
+for i in range(len(pics)):
+	ax.append(i)
 	ax[i] = fig.add_subplot(gs[0,i])
 	ax[i].imshow(axpic[i])  # load the picture
 	ax[i].axis('off')	   # clear x-axis and y-axis
