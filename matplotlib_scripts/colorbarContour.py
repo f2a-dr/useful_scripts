@@ -6,7 +6,8 @@ from matplotlib import ticker
 
 # Inizialize values for the colobar
 interval = [0.003,0.065]
-nticks = np.linspace(0.003,0.065,10)
+nticks = np.linspace(interval[0],interval[1],10) # ticks for colorbar in linear scale
+#nticks = np.concatenate((np.array([interval[0]]), np.logspace(np.log10(0.01),np.log10(0.1),2), np.array([interval[1]]))) # ticks for colorbar in logarithmic scale
 
 # Load pictures
 with open('polymer_stirredtank_Newt_nu_slice.png', 'rb') as image_file:
@@ -46,7 +47,8 @@ for i in range(len(ax)):
     ax[i].text(0.0, 1.0, axlab[i], transform=ax[i].transAxes + trans, fontsize=14, va='bottom') # set the label
 
 # Set up colorbar
-norm = mpl.colors.Normalize(vmin=interval[0],vmax=interval[1])  # interval normalization
+norm = mpl.colors.Normalize(vmin=interval[0],vmax=interval[1])  # interval normalization in linear scale
+#norm = mpl.colors.LogNorm(vmin=interval[0],vmax=interval[1])  # interval normalization in logarithmic scale
 cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap="jet"), ax=ax, fraction=0.10, aspect=40, orientation="horizontal", ticks=nticks)  # invoke colorbar
 cbar.set_label(label=r"$\nu\mathrm{\:(m^2\cdot s^{-1}})$", size=16) # set colorbar label
 cbar.ax.tick_params(labelsize=11)   # set colorbar tick labels
