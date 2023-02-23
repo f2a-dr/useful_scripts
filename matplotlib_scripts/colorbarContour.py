@@ -51,7 +51,12 @@ for i in range(len(pics)):
 # Set up colorbar and its ticks
 if logScale:
 	ini = np.ceil(np.log10(interval[0]))
-	fin = np.floor(np.log10(interval[1]))-1
+	if (10**ini - interval[0])/10**ini <= 0.2:
+		ini = ini + 1
+	fin = np.floor(np.log10(interval[1]))
+	print((interval[1] - fin)/fin)
+	if ((interval[1] - 10**fin)/10**fin) <= 0.2:
+		fin = fin - 1
 	iticks = np.logspace(ini, fin, int(fin)-int(ini)+1)	# internal ticks
 	iticksExp = np.linspace(ini, fin, int(fin)-int(ini)+1) # exponent of the internal ticks, base 10
 	nticks = np.concatenate((np.array([interval[0]]), iticks, np.array([interval[1]]))) # total ticks
@@ -62,17 +67,16 @@ if logScale:
 else:
 	nticks = np.linspace(interval[0],interval[1],10)
 	norm = mpl.colors.Normalize(vmin=interval[0],vmax=interval[1])  # interval normalization
+
 cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap="jet"), ax=ax, fraction=0.10, aspect=40, orientation="horizontal", ticks=nticks, extend=extension)  # invoke colorbar
+
+if logScale:
+	cbar.ax.set_xticklabels(lticks)	# set colorbar tick labels
+else:
+	cbar.ax.xaxis.set_major_formatter(ticker.StrMethodFormatter("{x:.1f}")) # format ticker label
+
 cbar.set_label(label=colorbarLabel, size=16) # set colorbar label
-cbar.ax.tick_params(labelsize=11)   # set colorbar tick labels
-cbar.ax.set_xticklabels(lticks)
-#cbar.ax.xaxis.set_major_formatter(ticker.StrMethodFormatter()) # format ticker label
-#cbar.ax.xaxis.set_major_formatter(ticker.StrMethodFormatter("{x:.1f}")) # format ticker label
-#tickFormat = ticker.ScalarFormatter()
-#tickFormat.set_useMathText(True)
-#tickFormat.set_scientific(True)
-#tickFormat.set_powerlimits((-7, -6))
-#cbar.ax.xaxis.set_major_formatter(tickFormat) # format ticker label
+cbar.ax.tick_params(labelsize=11)   # set format for tick labels
 
 
 #plt.show()
