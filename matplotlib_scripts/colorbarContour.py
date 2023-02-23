@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from matplotlib import ticker
 
 # Pictures to load in input and name of file to output
-pics = ['polymer_stirredtank_Newt_nu_slice.png', 'polymer_stirredtank_GPR0_nu_slice.png', 'polymer_stirredtank_GPR1_nu_slice.png']
-fileout = 'test.pdf'
+pics = ['polymer_Newt_strainRate_slice1.png', 'polymer_GPR0_strainRate_slice1.png', 'polymer_GPR1_strainRate_slice1.png']
+fileout = 'strainRateContour_1.pdf'
 
 # Initialize the labels and pictures for the axes
 axlab = ['a)', 'b)', 'c)']
@@ -14,10 +14,11 @@ ax = []
 axpic = []
 
 # Inizialize values for the colobar
-interval = [0.003,0.24]
+interval = [0.03,111]
 #interval = [0.003,0.065]
 logScale = True			# choose between logarithmic and linear scale for the colorbar
 extension = 'neither'	# extend the colorbar limits: 'neither', 'both', 'min', 'max'
+colorbarLabel = r"$\dot{\gamma}\:(\mathrm{s^{-1}})$"
 
 # Load pictures
 for i in range(len(pics)):
@@ -50,16 +51,28 @@ for i in range(len(pics)):
 # Set up colorbar and its ticks
 if logScale:
 	ini = np.ceil(np.log10(interval[0]))
-	fin = np.floor(np.log10(interval[1]))
-	nticks = np.concatenate((np.array([interval[0]]), np.logspace(ini, fin, int(fin)-int(ini)+1), np.array([interval[1]])))
+	fin = np.floor(np.log10(interval[1]))-1
+	iticks = np.logspace(ini, fin, int(fin)-int(ini)+1)	# internal ticks
+	iticksExp = np.linspace(ini, fin, int(fin)-int(ini)+1) # exponent of the internal ticks, base 10
+	nticks = np.concatenate((np.array([interval[0]]), iticks, np.array([interval[1]]))) # total ticks
+	lticks = [r"$10^{{{}}}$".format(int(iticksExp[i])) for i in range(len(iticksExp.tolist()))]
+	lticks.insert(0, str(interval[0]))
+	lticks.append(str(interval[1]))
 	norm = mpl.colors.LogNorm(vmin=interval[0],vmax=interval[1])  # interval normalization
 else:
-	nticks = np.linspace(0.003,0.065,10)
+	nticks = np.linspace(interval[0],interval[1],10)
 	norm = mpl.colors.Normalize(vmin=interval[0],vmax=interval[1])  # interval normalization
 cbar = fig.colorbar(cm.ScalarMappable(norm=norm, cmap="jet"), ax=ax, fraction=0.10, aspect=40, orientation="horizontal", ticks=nticks, extend=extension)  # invoke colorbar
-cbar.set_label(label=r"$\nu\mathrm{\:(m^2\cdot s^{-1}})$", size=16) # set colorbar label
+cbar.set_label(label=colorbarLabel, size=16) # set colorbar label
 cbar.ax.tick_params(labelsize=11)   # set colorbar tick labels
-cbar.ax.xaxis.set_major_formatter(ticker.StrMethodFormatter("{x:.3f}")) # format ticker label
+cbar.ax.set_xticklabels(lticks)
+#cbar.ax.xaxis.set_major_formatter(ticker.StrMethodFormatter()) # format ticker label
+#cbar.ax.xaxis.set_major_formatter(ticker.StrMethodFormatter("{x:.1f}")) # format ticker label
+#tickFormat = ticker.ScalarFormatter()
+#tickFormat.set_useMathText(True)
+#tickFormat.set_scientific(True)
+#tickFormat.set_powerlimits((-7, -6))
+#cbar.ax.xaxis.set_major_formatter(tickFormat) # format ticker label
 
 
 #plt.show()
