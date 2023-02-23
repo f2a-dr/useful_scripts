@@ -54,7 +54,6 @@ if logScale:
 	if (10**ini - interval[0])/10**ini <= 0.2:
 		ini = ini + 1
 	fin = np.floor(np.log10(interval[1]))
-	print((interval[1] - fin)/fin)
 	if ((interval[1] - 10**fin)/10**fin) <= 0.2:
 		fin = fin - 1
 	iticks = np.logspace(ini, fin, int(fin)-int(ini)+1)	# internal ticks
