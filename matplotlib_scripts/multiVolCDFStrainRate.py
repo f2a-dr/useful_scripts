@@ -83,6 +83,11 @@ ax1.set_ylabel(r"Volume fraction",fontsize=16)
 ax1.tick_params(axis="both",which="both",labelsize=11)
 for i in range(0, len(srSort)):
     ax1.plot(srSort[i], volFrac[i], color=col[i], label=lab[i])
+    #ax1.plot(srSort[i], (1.1+i/10)*np.ones(len(srSort[i])), color=col[i], linestyle='-', linewidth=1)
+    #ax1.plot(srSort[i][0], 1.1+i/10, color=col[i], marker=r"$[$", markersize=10)
+    #ax1.plot(srSort[i][-1], 1.1+i/10, color=col[i], marker=r"$]$", markersize=10)
+    ax1.plot(srSort[i][0], volFrac[i][0], color=col[i], marker=r"$[$", markersize=10)
+    ax1.plot(srSort[i][-1], volFrac[i][-1], color=col[i], marker=r"$]$", markersize=10)
 #ax1.plot(0.1*np.ones(50), np.linspace(0.0001,1).reshape(-1,1), 'tab:red')
 ax1.set_xscale("log")
 ax1.grid(which='minor', axis='x', color='tab:gray', linestyle=':', linewidth=0.3)
@@ -91,4 +96,5 @@ ax1.grid(which='major', axis='y', color='tab:gray', linestyle='-', linewidth=0.3
 plt.legend()
 
 #plt.show()
-fig.savefig("CDF_sr_GPR.pdf", dpi=300)
+#fig.savefig("CDF_sr_GPR.pdf", dpi=300)
+fig.savefig("multiTest.pdf", dpi=300)
