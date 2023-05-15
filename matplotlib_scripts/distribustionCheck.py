@@ -71,5 +71,18 @@ ax1.plot(test, dist, color='crimson', linewidth=2)
 ax1.text(1, 1, "mean = {mean}\nstdv = {stdv}".format(mean=round(np.mean(expVisc),4), stdv=round(np.std(expVisc),4)), ha='center', va='center', fontsize=12, bbox=dict(facecolor="dodgerblue", alpha=1), color='white', transform=ax1.transAxes)
 
 plt.show()
+
+p=sp.stats.mstats.normaltest(expVisc, axis=0).pvalue
+if p<0.01:
+	print ('distribution is not normal')
+else:
+	print ('distribution is normal')
+p=sp.stats.mstats.normaltest(np.log(expVisc), axis=0).pvalue
+if p<0.01:
+	print ('distribution is not log-normal')
+else:
+	print ('distribution is log-normal')
+
+
 #fig4.savefig('postprocessing_plots/final_plots/Visc.png', format='png', dpi=600)
 #fig4.savefig('postprocessing_plots/final_plots/Visc.pdf', format='pdf')
