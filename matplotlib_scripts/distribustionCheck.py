@@ -7,7 +7,8 @@
 
 import matplotlib
 import numpy as np
-#from scipy.optimize import curve_fit
+import scipy as sp
+from scipy import stats
 import matplotlib.pyplot as plt
 #matplotlib.use('Agg')
 
@@ -61,23 +62,23 @@ ax1 = fig4.add_subplot(gs4[0,0])
 ax1.set_title(r"Viscosity distribution, DPD units")
 ax1.set_xlabel(r"$\mu$", fontsize=12)
 ax1.set_ylabel(r"PDF", fontsize=12)
-expVisc = np.exp(Visc)
-viscHist, bins = np.histogram(np.array(expVisc), bins=100, density=True)
+plotVisc = np.array(Visc)
+viscHist, bins = np.histogram(np.array(plotVisc), bins=100, density=True)
 ax1.stairs(viscHist, bins, edgecolor='tab:blue', fill=True, facecolor='dodgerblue')
-test = np.linspace(np.min(expVisc), np.max(expVisc), 1000)
-dist = 1/(np.sqrt(2*np.pi)*np.std(expVisc))*np.exp(-1/2*((test-np.mean(expVisc))/np.std(expVisc))**2)
+test = np.linspace(np.min(plotVisc), np.max(plotVisc), 1000)
+dist = 1/(np.sqrt(2*np.pi)*np.std(plotVisc))*np.exp(-1/2*((test-np.mean(plotVisc))/np.std(plotVisc))**2)
 # dist = np.exp(-1/2*((test-np.mean(Visc))/np.std(Visc))**2)
 ax1.plot(test, dist, color='crimson', linewidth=2)
-ax1.text(1, 1, "mean = {mean}\nstdv = {stdv}".format(mean=round(np.mean(expVisc),4), stdv=round(np.std(expVisc),4)), ha='center', va='center', fontsize=12, bbox=dict(facecolor="dodgerblue", alpha=1), color='white', transform=ax1.transAxes)
+ax1.text(1, 1, "mean = {mean}\nstdv = {stdv}".format(mean=round(np.mean(plotVisc),4), stdv=round(np.std(plotVisc),4)), ha='center', va='center', fontsize=12, bbox=dict(facecolor="dodgerblue", alpha=1), color='white', transform=ax1.transAxes)
 
 plt.show()
 
-p=sp.stats.mstats.normaltest(expVisc, axis=0).pvalue
+p=sp.stats.mstats.normaltest(plotVisc, axis=0).pvalue
 if p<0.01:
 	print ('distribution is not normal')
 else:
 	print ('distribution is normal')
-p=sp.stats.mstats.normaltest(np.log(expVisc), axis=0).pvalue
+p=sp.stats.mstats.normaltest(np.log(plotVisc), axis=0).pvalue
 if p<0.01:
 	print ('distribution is not log-normal')
 else:
