@@ -11,7 +11,7 @@ files = ["p_0", "p_1", "p_2", "Ux_0", "Uy_0", "Uz_0"]
 #howToPlot = [3, 3]
 howToPlot = [[0, 1, 2], [3, 4, 5]]
 fileout = ["p", "U"]
-labels = [r"$p^0$", "$p^1$", "$p^2$", "$U_x^0$", "$U_y^0$", "$U_z^0$"]
+labels = [r"$p^0$", r"$p^1$", r"$p^2$", r"$U_x^0$", r"$U_y^0$", r"$U_z^0$"]
 colors = ["tab:blue", "tab:orange", "tab:green", "tab:red", "tab:purple", "tab:brown", "tab:pink", "tab:grey", "tab:olive", "tab:cyan"]
 
 # Set up the needed lists

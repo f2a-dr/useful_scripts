@@ -50,6 +50,9 @@ for i in range(len(pics)):
 
 # Set up colorbar and its ticks
 if logScale:
+	# if interval[0] <=
+	# first = str(interval[0])
+	# last = str(interval[1])
 	ini = np.ceil(np.log10(interval[0]))
 	if (10**ini - interval[0])/10**ini <= 0.2:
 		ini = ini + 1
@@ -60,8 +63,8 @@ if logScale:
 	iticksExp = np.linspace(ini, fin, int(fin)-int(ini)+1) # exponent of the internal ticks, base 10
 	nticks = np.concatenate((np.array([interval[0]]), iticks, np.array([interval[1]]))) # total ticks
 	lticks = [r"$10^{{{}}}$".format(int(iticksExp[i])) for i in range(len(iticksExp.tolist()))]
-	lticks.insert(0, str(interval[0]))
-	lticks.append(str(interval[1]))
+	lticks.insert(0, first)
+	lticks.append(last)
 	norm = mpl.colors.LogNorm(vmin=interval[0],vmax=interval[1])  # interval normalization
 else:
 	nticks = np.linspace(interval[0],interval[1],10)
