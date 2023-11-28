@@ -18,6 +18,7 @@ N = RPM/60
 omega = RPM/60*2*np.pi
 T = 0.230
 D = T/3
+Re = rho*N*D**2/mu
 
 # Specify what will go in each plot
 howToPlot = [[0, 1], [2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]
@@ -95,6 +96,18 @@ for i in range(len(files)):
             values[i+8].append(values[i][j]*V/(N**3*D**5))
             # powers[i].append(values[i][j]*rho)
             # powerNumbers[i].append(values[i][j]*rho/(N**3*D**5))
+
+print("\nRPM = {}".format(RPM))
+print("\nN = {}".format(N))
+print("\nRe = {}".format(Re))
+print("\nPower stat (W) = {}".format(values[4][-1]))
+print("\nPower rot (W) = {}".format(values[5][-1]))
+print("\nPower epsAv (W) = {}".format(values[6][-1]))
+print("\nPower eps (W) = {}".format(values[7][-1]))
+print("\nNp stat = {}".format(values[8][-1]))
+print("\nNp rot = {}".format(values[9][-1]))
+print("\nNp epsAv = {}".format(values[10][-1]))
+print("\nNp eps = {}".format(values[11][-1]))
 
 # Plot the results
 plt.rcParams.update({
