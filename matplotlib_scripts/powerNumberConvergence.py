@@ -137,3 +137,9 @@ for i in range(len(howToPlot)):
 
     #plt.show()
     fig[i].savefig("Power_"+fileout[i]+".pdf",dpi=300)
+
+
+print("\n### Power Number ###")
+print("Static parts, Np = {}".format(values[2*len(files)][-1]))
+print("Rotating parts, Np = {}".format(values[1+2*len(files)][-1]))
+# print("Epsilon, Np = {}".format(values[2+2*len(files)][-1]))
