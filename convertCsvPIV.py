@@ -24,7 +24,7 @@ with open(filename) as f:
         W.append(float(line[4]))
 
 with open(newFile, "w") as f:
-    f.write("x_m,y_m,z_m,U,V,W")
+    f.write("x_m,y_m,z_m,U,V,W\n")
     for i in range(len(x)):
         f.write(str(x[i])+","+str(y[i])+","+str(z[i])+","+
-                str(U[i])+","+str(V[i])+","+str(W[i]))
+                str(U[i])+","+str(V[i])+","+str(W[i])+"\n")
