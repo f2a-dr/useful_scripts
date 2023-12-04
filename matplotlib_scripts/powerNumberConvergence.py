@@ -84,26 +84,32 @@ for i in range(len(files)):
 for i in range(len(files)):
     if i < 2:
         for j in range(len(values[i])):
-            times[i+4].append(times[i][j])
-            times[i+8].append(times[i][j])
-            values[i+4].append(omega*values[i][j])
-            values[i+8].append(omega*values[i][j]/(rho*N**3*D**5))
+            if laminar:
+                times[i+4].append(times[i][j])
+                values[i+4].append(omega*values[i][j])
+            else:
+                times[i+8].append(times[i][j])
+                values[i+8].append(omega*values[i][j]/(rho*N**3*D**5))
             # powers[i].append(omega*values[i][j])
             # powerNumbers[i].append(omega*values[i][j]/(N**3*D**5))
     elif i == 2:
         for j in range(len(values[i])):
-            times[i+4].append(times[i][j])
-            times[i+8].append(times[i][j])
-            values[i+4].append(values[i][j]*V*rho)
-            values[i+8].append(values[i][j]*V/(N**3*D**5))
+            if laminar:
+                times[i+4].append(times[i][j])
+                values[i+4].append(values[i][j]*V*rho)
+            else:
+                times[i+8].append(times[i][j])
+                values[i+8].append(values[i][j]*V/(N**3*D**5))
             # powers[i].append(values[i][j]*V*rho)
             # powerNumbers[i].append(values[i][j]*V*rho/(N**3*D**5))
     else:
         for j in range(len(values[i])):
-            times[i+4].append(times[i][j])
-            times[i+8].append(times[i][j])
-            values[i+4].append(values[i][j]*V*rho)
-            values[i+8].append(values[i][j]*V/(N**3*D**5))
+            if laminar:
+                times[i+4].append(times[i][j])
+                values[i+4].append(values[i][j]*V*rho)
+            else:
+                times[i+8].append(times[i][j])
+                values[i+8].append(values[i][j]*V/(N**3*D**5))
             # powers[i].append(values[i][j]*rho)
             # powerNumbers[i].append(values[i][j]*rho/(N**3*D**5))
 
