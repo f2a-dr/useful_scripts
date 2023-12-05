@@ -1,7 +1,7 @@
 # Script to convert .csv from PIV in a .csv format easier to read in Paraview
 
 
-filename = "Pluronic_50_350rpm_3D.csv"
+filename = ""
 newFile = "new" + filename
 
 x = []
