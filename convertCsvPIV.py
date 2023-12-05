@@ -1,7 +1,7 @@
 # Script to convert .csv from PIV in a .csv format easier to read in Paraview
 
 
-filename = ""
+filename = "Pluronic_50_350rpm_3D.csv"
 newFile = "new" + filename
 
 x = []
@@ -19,9 +19,9 @@ with open(filename) as f:
         x.append(float(line[0])/1000)
         y.append(float("0"))
         z.append(float(line[1])/1000)
-        V.append(float(line[2]))
-        U.append(float(line[3]))
-        W.append(float(line[4]))
+        U.append(float(line[2]))
+        W.append(float(line[3]))
+        V.append(float(line[4]))
 
 with open(newFile, "w") as f:
     f.write("x_m,y_m,z_m,U,V,W\n")
