@@ -57,7 +57,7 @@ for i in range(1, len(header)):
 
     ax = fig[i].add_subplot(gs[i][0, 0])
     ax.set_xlabel(r"Step")
-    ax.set_ylabel(header[i]+"DPD units")
+    ax.set_ylabel(header[i]+", DPD units")
     ax.set_ylim(np.mean(fullData[i])-10*np.std(fullData[i]), np.mean(fullData[i])+10*np.std(fullData[i]))
     ax.plot(fullData[0], fullData[i], color="dodgerblue", label=header[i])
     ax.plot(data[0], np.mean(data[i])*np.ones(len(data[0])), color="crimson", label=r"$\langle$"+header[i]+r"$\rangle$")
