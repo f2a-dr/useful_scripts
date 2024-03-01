@@ -39,6 +39,7 @@ with open(filename) as f:
 data = [[] for i in range(len(header))]
 for i in range(len(header)):
     data[i] = fullData[i][Eq+1:]
+    header[i] = header[i].replace("_", " ")
 
 
 plt.rcParams.update({
