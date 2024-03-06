@@ -16,7 +16,7 @@ s = []
 for _ in range(len(foldList)):
     if re.findall("\d+$", foldList[_]):
         val = re.findall("\d+$", foldList[_])
-        s.append(int(val))
+        s.append(int(val[0]))
 
 cellVolumesFile = str(max(s)) + "/V"
 variableToIntegrateFile = str(max(s)) + "/strainRate"
