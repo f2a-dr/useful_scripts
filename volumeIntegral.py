@@ -1,13 +1,26 @@
-
-
-cellVolumesFile = "10000/V"
-variableToIntegrateFile = "10000/strainRate"
+import subprocess
+import re
 
 mu =  0.442
 rho = 1025
 nu = mu/rho
 sr = []
 volumes = []
+
+# Read the list of folders in the OpenFOAM case directory
+lsOut = subprocess.check_output(["ls", "."], text=True)
+foldList = list(str(lsOut).split("\n"))
+
+# Identify the last iteration folder
+s = []
+for _ in range(len(foldList)):
+    if re.findall("\d+$", foldList[_]):
+        val = re.findall("\d+$", foldList[_])
+        s.append(int(val))
+
+cellVolumesFile = str(max(s)) + "/V"
+variableToIntegrateFile = str(max(s)) + "/strainRate"
+
 
 nCellPos = 21 # Line in the file that contains the number of cells in the mesh (starting from 1)
 
