@@ -19,7 +19,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 #matplotlib.use('Agg')
 
+# If true, every plot will not be displayed, but saved in a file, deafult 
+# extension pdf, it is possible to change it at the end of the script
 toSave = False
+# List with the column number of the variables that we want to plot, it is
+# possible to use the string "all" to print all the variables of the dat file
+colsToPrint = [4, 5, 6]
 
 # Constant parameter definitions
 printTime = 100			# This variable is how often the result are printed in the log.lammps file
@@ -43,6 +48,8 @@ for i in range(len(header)):
     data[i] = fullData[i][Eq+1:]
     header[i] = header[i].replace("_", " ")
 
+if colsToPrint == "all":
+    colsToPrint = list(range(1, len(header)))
 
 plt.rcParams.update({
     "text.usetex": True,
@@ -52,7 +59,7 @@ plt.rcParams.update({
 fig = [0]*len(header)
 gs = [0]*len(header)
 centimeters = 1/2.54
-for i in range(1, len(header)):
+for i in colsToPrint:
 
     fig[i] = plt.figure(figsize=(15*centimeters, 15*centimeters), constrained_layout=True)
     gs[i] = fig[i].add_gridspec(1, 1)
@@ -68,7 +75,7 @@ for i in range(1, len(header)):
     ax.legend(fontsize=14)
 
 if toSave:
-    for i in range(1, len(header)):
+    for i in colsToPrint:
         fig[i].savefig(header[i]+".pdf")
 else:
     plt.show()
