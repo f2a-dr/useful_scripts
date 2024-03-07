@@ -76,7 +76,7 @@ for i in colsToPrint:
 
 if toSave:
     for i in colsToPrint:
-        fig[i].savefig(header[i]+".pdf")
+        fig[i].savefig(header[i].replace(" ", "")+".pdf")
 else:
     plt.show()
 
