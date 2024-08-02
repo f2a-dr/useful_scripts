@@ -108,15 +108,15 @@ toPrintU = np.mean(gridU, axis=1)
 toPrintV = np.mean(gridV, axis=1)
 toPrintW = np.mean(gridW, axis=1)
 print("Velocity values averaged.")
-print("len(x) = {}".format(len(x)))
-print("len(toPrintU) = {}".format(len(toPrintU)))
 
 print("Writing csv file with results...")
 with open(cfdCsv, "w") as f:
     f.write("x_m,y_m,z_m,U,V,W\n")
-    for i in range(len(x)):
-        f.write(str(round(x[i], 7))+","+str(round(y[i], 7))+","+str(round(z[i], 7))+","+
-                str(round(toPrintU[i], 7))+","+str(round(toPrintV[i], 7))+","+str(round(toPrintW[i], 7))+"\n")
+    for i in range(len(toPrintU)):
+        iR = int(i/len(singleZ))
+        iZ = i - iR*len(singleZ)
+        f.write("{:.10f},".format(singleR[iR])+"0.0,"+"{:.10f},".format(singleZ[iZ])+
+            "{:.10f},".format(toPrintU[i])+"{:.10f},".format(toPrintV[i])+"{:.10f}".format(toPrintW[i])+"\n")
 print("Csv file written.")
 
 print("Process completed.")
