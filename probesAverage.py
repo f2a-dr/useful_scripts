@@ -31,6 +31,7 @@ for i in range(len(lsComm)):
 # probesFile = "postProcessing/probes/" + str(max(s)) + "/U"
 probesFile = './U'
 cfdCsv = 'cfd.csv'
+fullCsv = 'probes.csv'
 
 # Reading probes file
 
@@ -70,7 +71,15 @@ print("Transform velocities in cylindrical coordinates...")
 Ur = []
 Utheta = []
 for i in range(len(x)):
-    phi = np.arctan(y[i]/x[i])
+    if (x[i] >= 0) and (y[i] >= 0):
+        phi = np.arccos(x[i])
+    elif (x[i] < 0) and (y[i] >= 0):
+        phi = np.arccos(x[i])
+    elif (x[i] <= 0) and (y[i] < 0):
+        phi = np.pi - np.arcsin(y[i])
+    elif (x[i] > 0) and (y[i] < 0):
+        phi = 2*np.pi - np.arccos(x[i])
+    # phi = np.arctan(y[i]/x[i])
     Ur.append(Ux[i]*np.cos(phi)+Uy[i]*np.sin(phi))
     Utheta.append(-Ux[i]*np.sin(phi)+Uy[i]*np.cos(phi))
 print("Coordinates transform completed.")
@@ -118,6 +127,14 @@ with open(cfdCsv, "w") as f:
         f.write("{:.10f},".format(singleR[iR])+"0.0,"+"{:.10f},".format(singleZ[iZ])+
             "{:.10f},".format(toPrintU[i])+"{:.10f},".format(toPrintV[i])+"{:.10f}".format(toPrintW[i])+"\n")
 print("Csv file written.")
+
+print("Write csv file with all the probes...")
+with open(fullCsv, "w") as f:
+    f.write("x_m,y_m,z_m,U,V,W\n")
+    for i in range(len(x)):
+        f.write("{:.10f},".format(x[i])+"{:.10f},".format(y[i])+"{:.10f},".format(z[i])+
+            "{:.10f},".format(Ux[i])+"{:.10f},".format(Uy[i])+"{:.10f}".format(Uz[i])+"\n")
+print("Full csv written.")
 
 print("Process completed.")
 

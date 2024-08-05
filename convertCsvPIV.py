@@ -15,7 +15,7 @@ newFile = "new" + filename
 turbineRadius = 0.23/6
 clearance = 0.101
 originShift = clearance + 0.23/3*0.04/2
-angleDiscr = 218
+angleDiscr = 4
 
 x = []
 y = []
