@@ -44,6 +44,44 @@ def plotTimeResponsePxy(folders, onlyTTCF=False):
 
     plt.close('all')
 
+def plotPxyProfile(folders, onlyTTCF=False):
+    for i in range(len(folders)):
+        filename = folders[i] + "/profile_TTCF_c_stress[4].txt"
+        with open(filename) as f:
+            lines = f.read().splitlines()
+            for j in range(len(lines)):
+                lines[j] = lines[j].strip().split()
+            PxyTTCF = np.array(lines, dtype='double')
+            
+        if not(onlyTTCF):
+            filename = folders[i] + "/profile_DAV_c_stress[4].txt"
+            with open(filename) as f:
+                lines = f.read().splitlines()
+                for j in range(len(lines)):
+                    lines[j] = lines[j].strip().split()
+                PxyDAV = np.array(lines, dtype='double')
+
+        binsN = np.linspace(0, len(vxTTCF[0]), len(vxTTCF[0]))
+        centimeters = 1/2.54
+        fig = plt.figure(figsize=(10*centimeters, 10*centimeters), constrained_layout=True)
+        gs = fig.add_gridspec(1, 1)
+        ax = fig.add_subplot(gs[0, 0])
+        ax.set_xlabel(r"Bins", fontsize=16)
+        ax.set_ylabel(r"$P_{xy}$, DPD units", fontsize=16)
+        ax.plot(binsN, np.mean(PxyTTCF, axis=0), color="dodgerblue", label="TTCF")
+        if not(onlyTTCF):
+            ax.plot(binsN, np.mean(PxyDAV, axis=0), color="crimson", label="DAV")
+        ax.tick_params(axis="both", which="major", labelsize=14)
+        # ax.yaxis.set_major_formatter(ticker.NullFormatter())
+        ax.legend(fontsize=14)
+
+        if not(onlyTTCF):
+            fig.savefig(folders[i]+"/Pxy_profile.png", dpi=300)
+        else:
+            fig.savefig(folders[i]+"/Pxy_profile_ttcf.png", dpi=300)
+        plt.cla()
+
+
 def plotVelocity(folders, onlyTTCF=False, timeResponse=True):
     for i in range(len(folders)):
         filename = folders[i] + "/profile_TTCF_vx.txt"
