@@ -61,7 +61,7 @@ def plotPxyProfile(folders, onlyTTCF=False):
                     lines[j] = lines[j].strip().split()
                 PxyDAV = np.array(lines, dtype='double')
 
-        binsN = np.linspace(0, len(vxTTCF[0]), len(vxTTCF[0]))
+        binsN = np.linspace(0, len(PxyTTCF[0]), len(PxyTTCF[0]))
         centimeters = 1/2.54
         fig = plt.figure(figsize=(10*centimeters, 10*centimeters), constrained_layout=True)
         gs = fig.add_gridspec(1, 1)
