@@ -161,3 +161,5 @@ if __name__ == "__main__":
     plotTimeResponsePxy(folders)
     plotVelocity(folders, onlyTTCF=True)
     plotVelocity(folders)
+    plotPxyProfile(folders, onlyTTCF=True)
+    plotPxyProfile(folders)
