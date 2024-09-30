@@ -121,12 +121,15 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True):
 
         if timeResponse:
             bin1 = 14
-            bin2 = 89
+            bin2 = 69
+            bin3 = 89
             v1_TTCF = np.transpose(vxTTCF)[bin1]
             v2_TTCF = np.transpose(vxTTCF)[bin2]
+            v3_TTCF = np.transpose(vxTTCF)[bin3]
             if not(onlyTTCF):
                 v1_DAV = np.transpose(vxDAV)[bin1]
                 v2_DAV = np.transpose(vxDAV)[bin2]
+                v3_DAV = np.transpose(vxDAV)[bin3]
             time = list(np.linspace(0, delay*timestep*len(v1_TTCF), len(v1_TTCF)))
 
             fig1 = plt.figure(figsize=(10*centimeters, 10*centimeters), constrained_layout=True)
@@ -136,9 +139,11 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True):
             ax.set_ylabel(r"$v_{x}$, DPD units", fontsize=16)
             ax.plot(time, v1_TTCF, color="dodgerblue", label="TTCF - bin {}".format(bin1+1))
             ax.plot(time, v2_TTCF, color="steelblue", label="TTCF - bin {}".format(bin2+1))
+            ax.plot(time, v3_TTCF, color="royalblue", label="TTCF - bin {}".format(bin3+1))
             if not(onlyTTCF):
                 ax.plot(time, v1_DAV, color="crimson", label="DAV - bin {}".format(bin1+1))
                 ax.plot(time, v2_DAV, color="firebrick", label="DAV - bin {}".format(bin2+1))
+                ax.plot(time, v3_DAV, color="indianred", label="DAV - bin {}".format(bin3+1))
             ax.tick_params(axis="both", which="major", labelsize=14)
             # ax.yaxis.set_major_formatter(ticker.NullFormatter())
             ax.legend(fontsize=14)
