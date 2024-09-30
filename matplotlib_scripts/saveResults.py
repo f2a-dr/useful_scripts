@@ -82,8 +82,13 @@ def plotPxyProfile(folders, onlyTTCF=False):
         plt.cla()
 
 
-def plotVelocity(folders, onlyTTCF=False, timeResponse=True):
+def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles=False):
     for i in range(len(folders)):
+        if theoreticalProfiles:
+            print("""WARNING: You are plotting also the theoretical profiles, be sure
+                    to use the right box size and shear rate value""")
+            L = 5
+            shearRate = 0.01
         filename = folders[i] + "/profile_TTCF_vx.txt"
         with open(filename) as f:
             lines = f.read().splitlines()
@@ -109,6 +114,8 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True):
         ax.plot(binsN, np.mean(vxTTCF, axis=0), color="dodgerblue", label="TTCF")
         if not(onlyTTCF):
             ax.plot(binsN, np.mean(vxDAV, axis=0), color="crimson", label="DAV")
+        if theoreticalProfiles:
+            ax.plot(binsN, shearRate*np.linspace(0, L, len(binsN)), color="black")
         ax.tick_params(axis="both", which="major", labelsize=14)
         # ax.yaxis.set_major_formatter(ticker.NullFormatter())
         ax.legend(fontsize=14)
@@ -144,6 +151,10 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True):
                 ax.plot(time, v1_DAV, color="crimson", label="DAV - bin {}".format(bin1+1))
                 ax.plot(time, v2_DAV, color="firebrick", label="DAV - bin {}".format(bin2+1))
                 ax.plot(time, v3_DAV, color="indianred", label="DAV - bin {}".format(bin3+1))
+            if theoreticalProfiles:
+                ax.plot(time, shearRate*L*(bin1+1)/100*np.ones(len(time)), color="black")
+                ax.plot(time, shearRate*L*(bin2+1)/100*np.ones(len(time)), color="black")
+                ax.plot(time, shearRate*L*(bin3+1)/100*np.ones(len(time)), color="black")
             ax.tick_params(axis="both", which="major", labelsize=14)
             # ax.yaxis.set_major_formatter(ticker.NullFormatter())
             ax.legend(fontsize=14)
