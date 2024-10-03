@@ -175,7 +175,7 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
 if __name__ == "__main__":
     plotTimeResponsePxy(folders, onlyTTCF=True)
     plotTimeResponsePxy(folders)
-    plotVelocity(folders, onlyTTCF=True)
-    plotVelocity(folders)
+    plotVelocity(folders, onlyTTCF=True, theoreticalProfiles=False)
+    plotVelocity(folders, theoreticalProfiles=False)
     plotPxyProfile(folders, onlyTTCF=True)
     plotPxyProfile(folders)
