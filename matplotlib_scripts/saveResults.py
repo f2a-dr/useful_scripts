@@ -39,10 +39,10 @@ def plotTimeResponsePxy(folders, onlyTTCF=False):
 
         if not(onlyTTCF):
             for i in printFormat:
-                fig.savefig(folders[i]+"/Pxy.{}".format(i), dpi=300)
+                fig.savefig(folders[i]+"/Pxy."+i, dpi=300)
         else:
             for i in printFormat:
-                fig.savefig(folders[i]+"/Pxy_ttcf.{}".format(i), dpi=300)
+                fig.savefig(folders[i]+"/Pxy_ttcf."+i, dpi=300)
         plt.cla()
 
     plt.close('all')
@@ -80,10 +80,10 @@ def plotPxyProfile(folders, onlyTTCF=False):
 
         if not(onlyTTCF):
             for i in printFormat:
-                fig.savefig(folders[i]+"/Pxy_profile.{}".format(i), dpi=300)
+                fig.savefig(folders[i]+"/Pxy_profile."+i, dpi=300)
         else:
             for i in printFormat:
-                fig.savefig(folders[i]+"/Pxy_profile_ttcf.{}".format(i), dpi=300)
+                fig.savefig(folders[i]+"/Pxy_profile_ttcf."+i, dpi=300)
         plt.cla()
 
 
@@ -127,10 +127,10 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
 
         if not(onlyTTCF):
             for i in printFormat:
-                fig.savefig(folders[i]+"/vx.{}".format(i), dpi=300)
+                fig.savefig(folders[i]+"/vx."+i, dpi=300)
         else:
             for i in printFormat:
-                fig.savefig(folders[i]+"/vx_ttcf.{}".format(i), dpi=300)
+                fig.savefig(folders[i]+"/vx_ttcf."+i, dpi=300)
         plt.cla()
 
         if timeResponse:
@@ -168,10 +168,10 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
 
             if not(onlyTTCF):
                 for i in printFormat:
-                    fig1.savefig(folders[i]+"/vx_time.{}".format(i), dpi=300)
+                    fig1.savefig(folders[i]+"/vx_time."+i, dpi=300)
             else:
                 for i in printFormat:
-                    fig1.savefig(folders[i]+"/vx_ttcf_time.{}".format(i), dpi=300)
+                    fig1.savefig(folders[i]+"/vx_ttcf_time."+i, dpi=300)
 
             plt.cla()
 
