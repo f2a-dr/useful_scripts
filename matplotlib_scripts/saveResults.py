@@ -38,11 +38,11 @@ def plotTimeResponsePxy(folders, onlyTTCF=False):
         ax.legend(fontsize=14)
 
         if not(onlyTTCF):
-            for i in printFormat:
-                fig.savefig(folders[i]+"/Pxy."+i, dpi=300)
+            for j in printFormat:
+                fig.savefig(folders[i]+"/Pxy."+j, dpi=300)
         else:
-            for i in printFormat:
-                fig.savefig(folders[i]+"/Pxy_ttcf."+i, dpi=300)
+            for j in printFormat:
+                fig.savefig(folders[i]+"/Pxy_ttcf."+j, dpi=300)
         plt.cla()
 
     plt.close('all')
@@ -79,11 +79,11 @@ def plotPxyProfile(folders, onlyTTCF=False):
         ax.legend(fontsize=14)
 
         if not(onlyTTCF):
-            for i in printFormat:
-                fig.savefig(folders[i]+"/Pxy_profile."+i, dpi=300)
+            for j in printFormat:
+                fig.savefig(folders[i]+"/Pxy_profile."+j, dpi=300)
         else:
-            for i in printFormat:
-                fig.savefig(folders[i]+"/Pxy_profile_ttcf."+i, dpi=300)
+            for j in printFormat:
+                fig.savefig(folders[i]+"/Pxy_profile_ttcf."+j, dpi=300)
         plt.cla()
 
 
@@ -126,11 +126,11 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
         ax.legend(fontsize=14)
 
         if not(onlyTTCF):
-            for i in printFormat:
-                fig.savefig(folders[i]+"/vx."+i, dpi=300)
+            for j in printFormat:
+                fig.savefig(folders[i]+"/vx."+j, dpi=300)
         else:
-            for i in printFormat:
-                fig.savefig(folders[i]+"/vx_ttcf."+i, dpi=300)
+            for j in printFormat:
+                fig.savefig(folders[i]+"/vx_ttcf."+j, dpi=300)
         plt.cla()
 
         if timeResponse:
@@ -167,11 +167,11 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
             ax.legend(fontsize=14)
 
             if not(onlyTTCF):
-                for i in printFormat:
-                    fig1.savefig(folders[i]+"/vx_time."+i, dpi=300)
+                for j in printFormat:
+                    fig1.savefig(folders[i]+"/vx_time."+j, dpi=300)
             else:
-                for i in printFormat:
-                    fig1.savefig(folders[i]+"/vx_ttcf_time."+i, dpi=300)
+                for j in printFormat:
+                    fig1.savefig(folders[i]+"/vx_ttcf_time."+j, dpi=300)
 
             plt.cla()
 
