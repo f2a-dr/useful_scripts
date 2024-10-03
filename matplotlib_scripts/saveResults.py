@@ -128,7 +128,7 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
 
         if timeResponse:
             bin1 = 14
-            bin2 = 69
+            bin2 = 49
             bin3 = 89
             v1_TTCF = np.transpose(vxTTCF)[bin1]
             v2_TTCF = np.transpose(vxTTCF)[bin2]
