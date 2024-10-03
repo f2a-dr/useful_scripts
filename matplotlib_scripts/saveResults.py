@@ -6,6 +6,7 @@ from matplotlib import ticker
 folders = ["dpd_L5_sr0.00001", "dpd_L5_sr0.01", "dpd_L5_sr1", "dpd_L15_sr0.00001", "dpd_L15_sr0.01", "dpd_L15_sr1"]
 timestep = 0.0025
 delay = 10
+printFormat = ["png"]
 
 def plotTimeResponsePxy(folders, onlyTTCF=False):
     for i in range(len(folders)):
@@ -37,9 +38,11 @@ def plotTimeResponsePxy(folders, onlyTTCF=False):
         ax.legend(fontsize=14)
 
         if not(onlyTTCF):
-            fig.savefig(folders[i]+"/Pxy.png", dpi=300)
+            for i in printFormat:
+                fig.savefig(folders[i]+"/Pxy.{}".format(i), dpi=300)
         else:
-            fig.savefig(folders[i]+"/Pxy_ttcf.png", dpi=300)
+            for i in printFormat:
+                fig.savefig(folders[i]+"/Pxy_ttcf.{}".format(i), dpi=300)
         plt.cla()
 
     plt.close('all')
@@ -76,9 +79,11 @@ def plotPxyProfile(folders, onlyTTCF=False):
         ax.legend(fontsize=14)
 
         if not(onlyTTCF):
-            fig.savefig(folders[i]+"/Pxy_profile.png", dpi=300)
+            for i in printFormat:
+                fig.savefig(folders[i]+"/Pxy_profile.{}".format(i), dpi=300)
         else:
-            fig.savefig(folders[i]+"/Pxy_profile_ttcf.png", dpi=300)
+            for i in printFormat:
+                fig.savefig(folders[i]+"/Pxy_profile_ttcf.{}".format(i), dpi=300)
         plt.cla()
 
 
@@ -121,9 +126,11 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
         ax.legend(fontsize=14)
 
         if not(onlyTTCF):
-            fig.savefig(folders[i]+"/vx.png", dpi=300)
+            for i in printFormat:
+                fig.savefig(folders[i]+"/vx.{}".format(i), dpi=300)
         else:
-            fig.savefig(folders[i]+"/vx_ttcf.png", dpi=300)
+            for i in printFormat:
+                fig.savefig(folders[i]+"/vx_ttcf.{}".format(i), dpi=300)
         plt.cla()
 
         if timeResponse:
@@ -160,9 +167,11 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
             ax.legend(fontsize=14)
 
             if not(onlyTTCF):
-                fig1.savefig(folders[i]+"/vx_time.png", dpi=300)
+                for i in printFormat:
+                    fig1.savefig(folders[i]+"/vx_time.{}".format(i), dpi=300)
             else:
-                fig1.savefig(folders[i]+"/vx_ttcf_time.png", dpi=300)
+                for i in printFormat:
+                    fig1.savefig(folders[i]+"/vx_ttcf_time.{}".format(i), dpi=300)
 
             plt.cla()
 
