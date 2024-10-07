@@ -3,26 +3,35 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 
-folders = ["dpd_L5_sr0.00001", "dpd_L5_sr0.01", "dpd_L5_sr1", "dpd_L15_sr0.00001", "dpd_L15_sr0.01", "dpd_L15_sr1"]
-timestep = 0.0025
-delay = 10
+folders = ["."]
+timestep = 0.001
+delay = 1
 printFormat = ["png"]
 
-def plotTimeResponsePxy(folders, onlyTTCF=False):
+def profileRead(filename):
+    with open(filename) as f:
+        lines = f.read().splitlines()
+        for j in range(len(lines)):
+            lines[j] = lines[j].strip().split()
+        profile = np.array(lines, dtype='double')
+    return profile
+
+def globalRead(filename, varPosition):
+    variable = []
+    with open(filename) as f:
+        for line in f:
+            line = line.strip().split()
+            variable.append(float(line[varPosition]))
+    return variable
+
+
+def plotTimeResponsePxy(folders, onlyTTCF=False, se=True):
     for i in range(len(folders)):
-        pxyTTCF = []
-        pxyDAV = []
-        filename = folders[i] + "/global_TTCF.txt"
-        with open(filename) as f:
-            for line in f:
-                line = line.strip().split()
-                pxyTTCF.append(float(line[0]))
+        pxyTTCF = globalRead(folders[i] + "/global_TTCF.txt", 0)
+        pxyTTCFse = globalRead(folders[i] + "/global_TTCF_SE.txt", 0)
         if not(onlyTTCF):
-            filename = folders[i] + "/global_DAV.txt"
-            with open(filename) as f:
-                for line in f:
-                    line = line.strip().split()
-                    pxyDAV.append(float(line[0]))
+            pxyDAV = globalRead(folders[i] + "/global_DAV.txt", 1)
+            pxyDAVse = globalRead(folders[i] + "/global_DAV_SE.txt", 1)
         time = list(np.linspace(0, delay*timestep*len(pxyTTCF), len(pxyTTCF)))
 
         centimeters = 1/2.54
@@ -31,9 +40,14 @@ def plotTimeResponsePxy(folders, onlyTTCF=False):
         ax = fig.add_subplot(gs[0, 0])
         ax.set_xlabel(r"Time", fontsize=16)
         ax.set_ylabel(r"$P_{xy}$, DPD units", fontsize=16)
-        ax.plot(time, pxyTTCF, color="dodgerblue", label="TTCF")
-        if not(onlyTTCF):
-            ax.plot(time, pxyDAV, color="crimson", label="DAV")
+        if not(se):
+            ax.plot(time, pxyTTCF, color="dodgerblue", label="TTCF")
+            if not(onlyTTCF):
+                ax.plot(time, pxyDAV, color="crimson", label="DAV")
+        else:
+            ax.errorbar(time, pxyTTCF, pxyTTCFse, linewidth=0.2, marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="dodgerblue", label="TTCF")
+            if not(onlyTTCF):
+                ax.errorbar(time, pxyDAV, pxyDAVse, linewidth=0.2, marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="crimson", label="DAV")
         ax.tick_params(axis="both", which="major", labelsize=14)
         ax.legend(fontsize=14)
 
@@ -87,28 +101,21 @@ def plotPxyProfile(folders, onlyTTCF=False):
         plt.cla()
 
 
-def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles=False):
+def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles=False, average=True):
     for i in range(len(folders)):
         if theoreticalProfiles:
             print("""WARNING: You are plotting also the theoretical profiles, be sure
                     to use the right box size and shear rate value""")
             L = 5
             shearRate = 0.01
-        filename = folders[i] + "/profile_TTCF_vx.txt"
-        with open(filename) as f:
-            lines = f.read().splitlines()
-            for j in range(len(lines)):
-                lines[j] = lines[j].strip().split()
-            vxTTCF = np.array(lines, dtype='double')
+
+        vxTTCF = profileRead(folders[i] + "/profile_TTCF_vx.txt")
+        vxTTCFse = profileRead(folders[i] + "/profile_TTCF_SE_vx.txt")
             
         if not(onlyTTCF):
-            filename = folders[i] + "/profile_DAV_vx.txt"
-            with open(filename) as f:
-                lines = f.read().splitlines()
-                for j in range(len(lines)):
-                    lines[j] = lines[j].strip().split()
-                vxDAV = np.array(lines, dtype='double')
-
+            vxDAV = profileRead(folders[i] + "/profile_DAV_vx.txt")
+            vxDAVse = profileRead(folders[i] + "/profile_DAV_SE_vx.txt")
+            
         binsN = np.linspace(0, len(vxTTCF[0]), len(vxTTCF[0]))
         centimeters = 1/2.54
         fig = plt.figure(figsize=(10*centimeters, 10*centimeters), constrained_layout=True)
@@ -116,9 +123,11 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
         ax = fig.add_subplot(gs[0, 0])
         ax.set_xlabel(r"Bins", fontsize=16)
         ax.set_ylabel(r"$v_{x}$, DPD units", fontsize=16)
-        ax.plot(binsN, np.mean(vxTTCF, axis=0), color="dodgerblue", label="TTCF")
+        # ax.plot(binsN, np.mean(vxTTCF, axis=0), color="dodgerblue", label="TTCF")
+        ax.errorbar(binsN, vxTTCF[-1], vxTTCFse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="dodgerblue", label="TTCF")
         if not(onlyTTCF):
-            ax.plot(binsN, np.mean(vxDAV, axis=0), color="crimson", label="DAV")
+            # ax.plot(binsN, np.mean(vxDAV, axis=0), color="crimson", label="DAV")
+            ax.errorbar(binsN, vxDAV[-1], vxDAVse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="crimson", label="DAV")
         if theoreticalProfiles:
             ax.plot(binsN, shearRate*np.linspace(0, L, len(binsN)), color="black")
         ax.tick_params(axis="both", which="major", labelsize=14)
