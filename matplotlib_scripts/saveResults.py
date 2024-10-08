@@ -172,9 +172,9 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
                 ax.errorbar(time, v2_DAV, v2_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="firebrick", label="DAV - bin {}".format(bin2+1))
                 ax.errorbar(time, v3_DAV, v3_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="indianred", label="DAV - bin {}".format(bin3+1))
             if theoreticalProfiles:
-                ax.plot(time, shearRate*L*(bin1+1)/100*np.ones(len(time)), color="black")
-                ax.plot(time, shearRate*L*(bin2+1)/100*np.ones(len(time)), color="black")
-                ax.plot(time, shearRate*L*(bin3+1)/100*np.ones(len(time)), color="black")
+                ax.plot(time, shearRate*L*(bin1+1)/len(vxTTCF[0])*np.ones(len(time)), color="black")
+                ax.plot(time, shearRate*L*(bin2+1)/len(vxTTCF[0])*np.ones(len(time)), color="black")
+                ax.plot(time, shearRate*L*(bin3+1)/len(vxTTCF[0])*np.ones(len(time)), color="black")
             ax.tick_params(axis="both", which="major", labelsize=14)
             # ax.yaxis.set_major_formatter(ticker.NullFormatter())
             ax.legend(fontsize=14)
