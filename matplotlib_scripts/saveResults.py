@@ -45,7 +45,7 @@ def plotTimeResponsePxy(folders, onlyTTCF=False, se=True):
             if not(onlyTTCF):
                 ax.plot(time, pxyDAV, color="crimson", label="DAV")
         else:
-            ax.errorbar(time, pxyTTCF, pxyTTCFse, linewidth=0.2, marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="teal", elinewidth=0.5, color="dodgerblue", label="TTCF")
+            ax.errorbar(time, pxyTTCF, pxyTTCFse, linewidth=0.2, marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="skyblue", elinewidth=0.5, color="dodgerblue", label="TTCF")
             if not(onlyTTCF):
                 ax.errorbar(time, pxyDAV, pxyDAVse, linewidth=0.2, marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
         ax.tick_params(axis="both", which="major", labelsize=14)
@@ -108,6 +108,12 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
             vxDAV = profileRead(folders[i] + "/profile_DAV_vx.txt")
             vxDAVse = profileRead(folders[i] + "/profile_DAV_SE_vx.txt")
             
+        if average:
+            avTTCF = np.mean(vxTTCF, axis=0)
+            avDAV = np.mean(vxDAV, axis=0)
+            seTTCF = np.sqrt(np.sum(vxTTCFse**2, axis=0)/len(vxTTCFse[0]))
+            seDAV = np.sqrt(np.sum(vxDAVse**2, axis=0)/len(vxDAVse[0]))
+
         binsN = np.linspace(0, len(vxTTCF[0]), len(vxTTCF[0]))
         centimeters = 1/2.54
         fig = plt.figure(figsize=(10*centimeters, 10*centimeters), constrained_layout=True)
@@ -115,11 +121,17 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
         ax = fig.add_subplot(gs[0, 0])
         ax.set_xlabel(r"Bins", fontsize=16)
         ax.set_ylabel(r"$v_{x}$, DPD units", fontsize=16)
+        if average:
+            ax.errorbar(binsN, avTTCF, seTTCF, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="skyblue", elinewidth=0.5, color="dodgerblue", label="TTCF")
         # ax.plot(binsN, np.mean(vxTTCF, axis=0), color="dodgerblue", label="TTCF")
-        ax.errorbar(binsN, vxTTCF[-1], vxTTCFse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="teal", elinewidth=0.5, color="dodgerblue", label="TTCF")
+        else:
+            ax.errorbar(binsN, vxTTCF[-1], vxTTCFse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="skyblue", elinewidth=0.5, color="dodgerblue", label="TTCF")
         if not(onlyTTCF):
             # ax.plot(binsN, np.mean(vxDAV, axis=0), color="crimson", label="DAV")
-            ax.errorbar(binsN, vxDAV[-1], vxDAVse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
+            if average:
+                ax.errorbar(binsN, avDAV, seDAV, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
+            else:
+                ax.errorbar(binsN, vxDAV[-1], vxDAVse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
         if theoreticalProfiles:
             ax.plot(binsN, shearRate*np.linspace(0, L, len(binsN)), color="black")
         ax.tick_params(axis="both", which="major", labelsize=14)
