@@ -164,7 +164,6 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
             ax.errorbar(time, v1_TTCF, v1_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, color="dodgerblue", label="TTCF - bin {}".format(bin1+1))
             ax.errorbar(time, v2_TTCF, v2_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, color="steelblue", label="TTCF - bin {}".format(bin2+1))
             ax.errorbar(time, v3_TTCF, v3_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, color="royalblue", label="TTCF - bin {}".format(bin3+1))
-        ax.errorbar(binsN, vxTTCF[-1], vxTTCFse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="teal", elinewidth=0.5, color="dodgerblue", label="TTCF")
             if not(onlyTTCF):
                 # ax.plot(time, v1_DAV, color="crimson", label="DAV - bin {}".format(bin1+1))
                 # ax.plot(time, v2_DAV, color="firebrick", label="DAV - bin {}".format(bin2+1))
