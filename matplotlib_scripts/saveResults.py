@@ -45,9 +45,9 @@ def plotTimeResponsePxy(folders, onlyTTCF=False, se=True):
             if not(onlyTTCF):
                 ax.plot(time, pxyDAV, color="crimson", label="DAV")
         else:
-            ax.errorbar(time, pxyTTCF, pxyTTCFse, linewidth=0.2, marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="dodgerblue", label="TTCF")
+            ax.errorbar(time, pxyTTCF, pxyTTCFse, linewidth=0.2, marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="teal", elinewidth=0.5, color="dodgerblue", label="TTCF")
             if not(onlyTTCF):
-                ax.errorbar(time, pxyDAV, pxyDAVse, linewidth=0.2, marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="crimson", label="DAV")
+                ax.errorbar(time, pxyDAV, pxyDAVse, linewidth=0.2, marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
         ax.tick_params(axis="both", which="major", labelsize=14)
         ax.legend(fontsize=14)
 
@@ -124,10 +124,10 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
         ax.set_xlabel(r"Bins", fontsize=16)
         ax.set_ylabel(r"$v_{x}$, DPD units", fontsize=16)
         # ax.plot(binsN, np.mean(vxTTCF, axis=0), color="dodgerblue", label="TTCF")
-        ax.errorbar(binsN, vxTTCF[-1], vxTTCFse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="dodgerblue", label="TTCF")
+        ax.errorbar(binsN, vxTTCF[-1], vxTTCFse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="teal", elinewidth=0.5, color="dodgerblue", label="TTCF")
         if not(onlyTTCF):
             # ax.plot(binsN, np.mean(vxDAV, axis=0), color="crimson", label="DAV")
-            ax.errorbar(binsN, vxDAV[-1], vxDAVse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="crimson", label="DAV")
+            ax.errorbar(binsN, vxDAV[-1], vxDAVse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
         if theoreticalProfiles:
             ax.plot(binsN, shearRate*np.linspace(0, L, len(binsN)), color="black")
         ax.tick_params(axis="both", which="major", labelsize=14)
