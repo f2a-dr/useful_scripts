@@ -64,11 +64,11 @@ def plotTimeResponsePxy(folders, onlyTTCF=False, se=True):
 def plotPxyProfile(folders, onlyTTCF=False):
     for i in range(len(folders)):
         PxyTTCF = profileRead(folders[i] + "/profile_TTCF_c_stress[4].txt")
-        PxyTTCFse = profileRead(folders[i] + "/profile_TTCF_c_stress[4]_vx.txt")
+        PxyTTCFse = profileRead(folders[i] + "/profile_TTCF_SE_c_stress[4].txt")
             
         if not(onlyTTCF):
             PxyDAV = profileRead(folders[i] + "/profile_DAV_c_stress[4].txt")
-            PxyDAVse = profileRead(folders[i] + "/profile_DAV_c_stress[4]_vx.txt")
+            PxyDAVse = profileRead(folders[i] + "/profile_DAV_SE_c_stress[4].txt")
 
         binsN = np.linspace(0, len(PxyTTCF[0]), len(PxyTTCF[0]))
         centimeters = 1/2.54
