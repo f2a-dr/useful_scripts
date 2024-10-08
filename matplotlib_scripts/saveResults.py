@@ -63,20 +63,12 @@ def plotTimeResponsePxy(folders, onlyTTCF=False, se=True):
 
 def plotPxyProfile(folders, onlyTTCF=False):
     for i in range(len(folders)):
-        filename = folders[i] + "/profile_TTCF_c_stress[4].txt"
-        with open(filename) as f:
-            lines = f.read().splitlines()
-            for j in range(len(lines)):
-                lines[j] = lines[j].strip().split()
-            PxyTTCF = np.array(lines, dtype='double')
+        PxyTTCF = profileRead(folders[i] + "/profile_TTCF_c_stress[4].txt")
+        PxyTTCFse = profileRead(folders[i] + "/profile_TTCF_c_stress[4]_vx.txt")
             
         if not(onlyTTCF):
-            filename = folders[i] + "/profile_DAV_c_stress[4].txt"
-            with open(filename) as f:
-                lines = f.read().splitlines()
-                for j in range(len(lines)):
-                    lines[j] = lines[j].strip().split()
-                PxyDAV = np.array(lines, dtype='double')
+            PxyDAV = profileRead(folders[i] + "/profile_DAV_c_stress[4].txt")
+            PxyDAVse = profileRead(folders[i] + "/profile_DAV_c_stress[4]_vx.txt")
 
         binsN = np.linspace(0, len(PxyTTCF[0]), len(PxyTTCF[0]))
         centimeters = 1/2.54
@@ -143,16 +135,22 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
         plt.cla()
 
         if timeResponse:
-            bin1 = 14
-            bin2 = 49
-            bin3 = 89
+            bin1 = int(0.15*len(vxTTCF))
+            bin2 = int(0.5*len(vxTTCF))
+            bin3 = int(0.9*len(vxTTCF))
             v1_TTCF = np.transpose(vxTTCF)[bin1]
             v2_TTCF = np.transpose(vxTTCF)[bin2]
             v3_TTCF = np.transpose(vxTTCF)[bin3]
+            v1_TTCFse = np.transpose(vxTTCFse)[bin1]
+            v2_TTCFse = np.transpose(vxTTCFse)[bin2]
+            v3_TTCFse = np.transpose(vxTTCFse)[bin3]
             if not(onlyTTCF):
                 v1_DAV = np.transpose(vxDAV)[bin1]
                 v2_DAV = np.transpose(vxDAV)[bin2]
                 v3_DAV = np.transpose(vxDAV)[bin3]
+                v1_DAVse = np.transpose(vxDAVse)[bin1]
+                v2_DAVse = np.transpose(vxDAVse)[bin2]
+                v3_DAVse = np.transpose(vxDAVse)[bin3]
             time = list(np.linspace(0, delay*timestep*len(v1_TTCF), len(v1_TTCF)))
 
             fig1 = plt.figure(figsize=(10*centimeters, 10*centimeters), constrained_layout=True)
@@ -160,13 +158,20 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
             ax = fig1.add_subplot(gs[0, 0])
             ax.set_xlabel(r"Time", fontsize=16)
             ax.set_ylabel(r"$v_{x}$, DPD units", fontsize=16)
-            ax.plot(time, v1_TTCF, color="dodgerblue", label="TTCF - bin {}".format(bin1+1))
-            ax.plot(time, v2_TTCF, color="steelblue", label="TTCF - bin {}".format(bin2+1))
-            ax.plot(time, v3_TTCF, color="royalblue", label="TTCF - bin {}".format(bin3+1))
+            # ax.plot(time, v1_TTCF, color="dodgerblue", label="TTCF - bin {}".format(bin1+1))
+            # ax.plot(time, v2_TTCF, color="steelblue", label="TTCF - bin {}".format(bin2+1))
+            # ax.plot(time, v3_TTCF, color="royalblue", label="TTCF - bin {}".format(bin3+1))
+            ax.errorbar(time, v1_TTCF, v1_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, color="dodgerblue", label="TTCF - bin {}".format(bin1+1))
+            ax.errorbar(time, v2_TTCF, v2_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, color="steelblue", label="TTCF - bin {}".format(bin2+1))
+            ax.errorbar(time, v3_TTCF, v3_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, color="royalblue", label="TTCF - bin {}".format(bin3+1))
+        ax.errorbar(binsN, vxTTCF[-1], vxTTCFse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="teal", elinewidth=0.5, color="dodgerblue", label="TTCF")
             if not(onlyTTCF):
-                ax.plot(time, v1_DAV, color="crimson", label="DAV - bin {}".format(bin1+1))
-                ax.plot(time, v2_DAV, color="firebrick", label="DAV - bin {}".format(bin2+1))
-                ax.plot(time, v3_DAV, color="indianred", label="DAV - bin {}".format(bin3+1))
+                # ax.plot(time, v1_DAV, color="crimson", label="DAV - bin {}".format(bin1+1))
+                # ax.plot(time, v2_DAV, color="firebrick", label="DAV - bin {}".format(bin2+1))
+                # ax.plot(time, v3_DAV, color="indianred", label="DAV - bin {}".format(bin3+1))
+                ax.errorbar(time, v1_DAV, v1_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, color="crimson", label="DAV - bin {}".format(bin1+1))
+                ax.errorbar(time, v2_DAV, v2_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, color="firebrick", label="DAV - bin {}".format(bin2+1))
+                ax.errorbar(time, v3_DAV, v3_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, color="indianred", label="DAV - bin {}".format(bin3+1))
             if theoreticalProfiles:
                 ax.plot(time, shearRate*L*(bin1+1)/100*np.ones(len(time)), color="black")
                 ax.plot(time, shearRate*L*(bin2+1)/100*np.ones(len(time)), color="black")
