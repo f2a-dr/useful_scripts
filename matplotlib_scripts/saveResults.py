@@ -110,9 +110,10 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
             
         if average:
             avTTCF = np.mean(vxTTCF, axis=0)
-            avDAV = np.mean(vxDAV, axis=0)
             seTTCF = np.sqrt(np.sum(vxTTCFse**2, axis=0)/len(vxTTCFse[0]))
-            seDAV = np.sqrt(np.sum(vxDAVse**2, axis=0)/len(vxDAVse[0]))
+            if not(onlyTTCF):
+                avDAV = np.mean(vxDAV, axis=0)
+                seDAV = np.sqrt(np.sum(vxDAVse**2, axis=0)/len(vxDAVse[0]))
 
         binsN = np.linspace(0, len(vxTTCF[0]), len(vxTTCF[0]))
         centimeters = 1/2.54
