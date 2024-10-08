@@ -30,8 +30,8 @@ def plotTimeResponsePxy(folders, onlyTTCF=False, se=True):
         pxyTTCF = globalRead(folders[i] + "/global_TTCF.txt", 0)
         pxyTTCFse = globalRead(folders[i] + "/global_TTCF_SE.txt", 0)
         if not(onlyTTCF):
-            pxyDAV = globalRead(folders[i] + "/global_DAV.txt", 1)
-            pxyDAVse = globalRead(folders[i] + "/global_DAV_SE.txt", 1)
+            pxyDAV = globalRead(folders[i] + "/global_DAV.txt", 0)
+            pxyDAVse = globalRead(folders[i] + "/global_DAV_SE.txt", 0)
         time = list(np.linspace(0, delay*timestep*len(pxyTTCF), len(pxyTTCF)))
 
         centimeters = 1/2.54
