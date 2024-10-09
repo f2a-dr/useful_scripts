@@ -9,13 +9,14 @@ import numpy as np
 
 # Variables definition
 
-filename = "Pluronic_50M_350rpm_3D.csv"
+filename = "test.csv"
 dictFile = "probes"
 newFile = "new" + filename
 turbineRadius = 0.23/6
 clearance = 0.101
 originShift = clearance + 0.23/3*0.04/2
-angleDiscr = 4
+angleDiscr = 6
+originShift = 0
 
 x = []
 y = []
@@ -52,13 +53,13 @@ newU = []
 newV = []
 newW = []
 for i in range(len(x)):
-    if (not(z[i] > 0.201) and not(((z[i] >= clearance) or (z[i] <= (clearance + turbineRadius*0.04))) and (np.abs(x[i]) <= turbineRadius))):
-        newX.append(x[i])
-        newY.append(y[i])
-        newZ.append(z[i])
-        newU.append(U[i])
-        newV.append(V[i])
-        newW.append(W[i])
+    # if (not(z[i] > 0.201) and not(((z[i] >= clearance) or (z[i] <= (clearance + turbineRadius*0.04))) and (np.abs(x[i]) <= turbineRadius))):
+    newX.append(x[i])
+    newY.append(y[i])
+    newZ.append(z[i])
+    newU.append(U[i])
+    newV.append(V[i])
+    newW.append(W[i])
 
 print("Writing new csv file...")
 with open(newFile, "w") as f:
@@ -71,7 +72,7 @@ print("New csv file written.")
 # Generate probes
 
 print("Calculating probes coordinates...")
-angles = np.linspace(0, 2*np.pi, angleDiscr)
+angles = np.linspace(0, 2*np.pi, angleDiscr, endpoint=False)
 
 newX = np.array(newX)
 newY = np.array(newY)

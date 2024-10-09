@@ -29,14 +29,14 @@ for i in range(len(lsComm)):
         csvFile = lsComm[i]
 # csvFile = subprocess.check_output(("grep",  "-E", lsComm), stdin=lsComm.stdout, text=True)
 # probesFile = "postProcessing/probes/" + str(max(s)) + "/U"
-probesFile = './U'
+probesFile = './fakeProbeU'
 cfdCsv = 'cfd.csv'
 fullCsv = 'probes.csv'
 
 # Reading probes file
 
 print("Reading probes file...")
-nProbes = subprocess.run(['grep -E "Probe" U | tail -n 1 | grep -Eo " [1-9]+ "'], shell=True, text=True, capture_output=True)
+nProbes = subprocess.run(['grep -E "Probe" ' + probesFile + ' | tail -n 1 | grep -Eo " [1-9]+ "'], shell=True, text=True, capture_output=True)
 nProbes = int(nProbes.stdout.strip()) + 1
 
 x = []
@@ -54,7 +54,7 @@ with open(probesFile) as f:
         x.append(float(line[0]))
         y.append(float(line[1]))
         z.append(float(line[2]))
-    next(f)
+    # next(f)
     line = f.readline().split(") (")
     line[0] = line[0].split("(")[1]
     line[-1] = line[-1].strip()[0:-1]
@@ -71,15 +71,15 @@ print("Transform velocities in cylindrical coordinates...")
 Ur = []
 Utheta = []
 for i in range(len(x)):
+    norm = np.sqrt(x[i]**2+y[i]**2)
     if (x[i] >= 0) and (y[i] >= 0):
-        phi = np.arccos(x[i])
+        phi = np.arccos(x[i]/norm)
     elif (x[i] < 0) and (y[i] >= 0):
-        phi = np.arccos(x[i])
+        phi = np.arccos(x[i]/norm)
     elif (x[i] <= 0) and (y[i] < 0):
-        phi = np.pi - np.arcsin(y[i])
+        phi = np.pi - np.arcsin(y[i]/norm)
     elif (x[i] > 0) and (y[i] < 0):
-        phi = 2*np.pi - np.arccos(x[i])
-    # phi = np.arctan(y[i]/x[i])
+        phi = 2*np.pi - np.arccos(x[i]/norm)
     Ur.append(Ux[i]*np.cos(phi)+Uy[i]*np.sin(phi))
     Utheta.append(-Ux[i]*np.sin(phi)+Uy[i]*np.cos(phi))
 print("Coordinates transform completed.")
