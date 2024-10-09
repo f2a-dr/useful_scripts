@@ -93,13 +93,13 @@ def plotPxyProfile(folders, onlyTTCF=False):
         plt.cla()
 
 
-def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles=False, average=True):
+def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles=False, average=True, index=-1):
     for i in range(len(folders)):
         if theoreticalProfiles:
             print("""WARNING: You are plotting also the theoretical profiles, be sure
                     to use the right box size and shear rate value""")
             L = 5
-            shearRate = 0.01
+            shearRate = 1e-2
 
         vxTTCF = profileRead(folders[i] + "/profile_TTCF_vx.txt")
         vxTTCFse = profileRead(folders[i] + "/profile_TTCF_SE_vx.txt")
@@ -126,13 +126,13 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
             ax.errorbar(binsN, avTTCF, seTTCF, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="skyblue", elinewidth=0.5, color="dodgerblue", label="TTCF")
         # ax.plot(binsN, np.mean(vxTTCF, axis=0), color="dodgerblue", label="TTCF")
         else:
-            ax.errorbar(binsN, vxTTCF[-1], vxTTCFse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="skyblue", elinewidth=0.5, color="dodgerblue", label="TTCF")
+            ax.errorbar(binsN, vxTTCF[index], vxTTCFse[index], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="skyblue", elinewidth=0.5, color="dodgerblue", label="TTCF")
         if not(onlyTTCF):
             # ax.plot(binsN, np.mean(vxDAV, axis=0), color="crimson", label="DAV")
             if average:
                 ax.errorbar(binsN, avDAV, seDAV, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
             else:
-                ax.errorbar(binsN, vxDAV[-1], vxDAVse[-1], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
+                ax.errorbar(binsN, vxDAV[index], vxDAVse[index], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
         if theoreticalProfiles:
             ax.plot(binsN, shearRate*np.linspace(0, L, len(binsN)), color="black")
         ax.tick_params(axis="both", which="major", labelsize=14)
