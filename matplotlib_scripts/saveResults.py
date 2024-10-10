@@ -53,10 +53,16 @@ def plotTimeResponsePxy(folders, onlyTTCF=False, se=True):
 
         if not(onlyTTCF):
             for j in printFormat:
-                fig.savefig(folders[i]+"/Pxy."+j, dpi=300)
+                if se:
+                    fig.savefig(folders[i]+"/Pxy_se."+j, dpi=300)
+                else:
+                    fig.savefig(folders[i]+"/Pxy."+j, dpi=300)
         else:
             for j in printFormat:
-                fig.savefig(folders[i]+"/Pxy_ttcf."+j, dpi=300)
+                if se:
+                    fig.savefig(folders[i]+"/Pxy_ttcf_se."+j, dpi=300)
+                else:
+                    fig.savefig(folders[i]+"/Pxy_ttcf."+j, dpi=300)
         plt.cla()
 
     plt.close('all')
@@ -180,16 +186,16 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
             # ax.plot(time, v1_TTCF, color="dodgerblue", label="TTCF - bin {}".format(bin1+1))
             # ax.plot(time, v2_TTCF, color="steelblue", label="TTCF - bin {}".format(bin2+1))
             # ax.plot(time, v3_TTCF, color="royalblue", label="TTCF - bin {}".format(bin3+1))
-            ax.errorbar(time, v1_TTCF, v1_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="dodgerblue", label="TTCF - bin {}".format(bin1+1))
-            ax.errorbar(time, v2_TTCF, v2_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="steelblue", label="TTCF - bin {}".format(bin2+1))
-            ax.errorbar(time, v3_TTCF, v3_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="royalblue", label="TTCF - bin {}".format(bin3+1))
+            ax.errorbar(time, v1_TTCF, v1_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="dodgerblue", ecolor="skyblue", label="TTCF - bin {}".format(bin1+1))
+            ax.errorbar(time, v2_TTCF, v2_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="steelblue", ecolor="lightsteelblue", label="TTCF - bin {}".format(bin2+1))
+            ax.errorbar(time, v3_TTCF, v3_TTCFse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="royalblue", ecolor="cornflowerblue", label="TTCF - bin {}".format(bin3+1))
             if not(onlyTTCF):
                 # ax.plot(time, v1_DAV, color="crimson", label="DAV - bin {}".format(bin1+1))
                 # ax.plot(time, v2_DAV, color="firebrick", label="DAV - bin {}".format(bin2+1))
                 # ax.plot(time, v3_DAV, color="indianred", label="DAV - bin {}".format(bin3+1))
-                ax.errorbar(time, v1_DAV, v1_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="crimson", label="DAV - bin {}".format(bin1+1))
-                ax.errorbar(time, v2_DAV, v2_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="firebrick", label="DAV - bin {}".format(bin2+1))
-                ax.errorbar(time, v3_DAV, v3_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="indianred", label="DAV - bin {}".format(bin3+1))
+                ax.errorbar(time, v1_DAV, v1_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="crimson", ecolor="lightcoral", label="DAV - bin {}".format(bin1+1))
+                ax.errorbar(time, v2_DAV, v2_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="firebrick", ecolor="lightsalmon", label="DAV - bin {}".format(bin2+1))
+                ax.errorbar(time, v3_DAV, v3_DAVse, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, elinewidth=0.5, color="indianred", ecolor="pink", label="DAV - bin {}".format(bin3+1))
             if theoreticalProfiles:
                 ax.plot(time, shearRate*L*(bin1+0.5)/len(vxTTCF[0])*np.ones(len(time)), color="black")
                 ax.plot(time, shearRate*L*(bin2+0.5)/len(vxTTCF[0])*np.ones(len(time)), color="black")
@@ -216,6 +222,8 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
 if __name__ == "__main__":
     plotTimeResponsePxy(folders, onlyTTCF=True)
     plotTimeResponsePxy(folders)
+    plotTimeResponsePxy(folders, onlyTTCF=True, se=False)
+    plotTimeResponsePxy(folders, se=False)
     plotVelocity(folders, onlyTTCF=True, theoreticalProfiles=True)
     plotVelocity(folders, theoreticalProfiles=True)
     plotVelocity(folders, onlyTTCF=True, theoreticalProfiles=True, average=False)
