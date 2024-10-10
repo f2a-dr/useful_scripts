@@ -141,10 +141,16 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
 
         if not(onlyTTCF):
             for j in printFormat:
-                fig.savefig(folders[i]+"/vx."+j, dpi=300)
+                if average:
+                    fig.savefig(folders[i]+"/vx."+j, dpi=300)
+                else:
+                    fig.savefig(folders[i]+"/vx_"+str(index)+"."+j, dpi=300)
         else:
             for j in printFormat:
-                fig.savefig(folders[i]+"/vx_ttcf."+j, dpi=300)
+                if average:
+                    fig.savefig(folders[i]+"/vx_ttcf."+j, dpi=300)
+                else:
+                    fig.savefig(folders[i]+"/vx_ttcf_"+str(index)+"."+j, dpi=300)
         plt.cla()
 
         if timeResponse:
@@ -212,5 +218,9 @@ if __name__ == "__main__":
     plotTimeResponsePxy(folders)
     plotVelocity(folders, onlyTTCF=True, theoreticalProfiles=True)
     plotVelocity(folders, theoreticalProfiles=True)
+    plotVelocity(folders, onlyTTCF=True, theoreticalProfiles=True, average=False)
+    plotVelocity(folders, theoreticalProfiles=True, average=False)
+    plotVelocity(folders, onlyTTCF=True, theoreticalProfiles=True, average=False, index=0)
+    plotVelocity(folders, theoreticalProfiles=True, average=False, index=0)
     plotPxyProfile(folders, onlyTTCF=True)
     plotPxyProfile(folders)
