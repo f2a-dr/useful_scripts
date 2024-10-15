@@ -136,7 +136,7 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
         if not(onlyTTCF):
             # ax.plot(binsN, np.mean(vxDAV, axis=0), color="crimson", label="DAV")
             if average:
-                ax.errorbar(binsN, avDAV, seDAV, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
+                ax.plot(binsN, avDAV, linewidth=0.5, marker="o", markersize=1, color="crimson", label="DAV")
             else:
                 ax.errorbar(binsN, vxDAV[index], vxDAVse[index], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="lightcoral", elinewidth=0.5, color="crimson", label="DAV")
         if theoreticalProfiles:
