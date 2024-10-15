@@ -130,7 +130,7 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
         ax.set_xlabel(r"Bins", fontsize=16)
         ax.set_ylabel(r"$v_{x}$, DPD units", fontsize=16)
         if average:
-            ax.plot(binsN, avTTCF, linewidth=0.5, marker="o", marskersize=1, color="dodgerblue", label="TTCF")
+            ax.plot(binsN, avTTCF, linewidth=0.5, marker="o", markersize=1, color="dodgerblue", label="TTCF")
         else:
             ax.errorbar(binsN, vxTTCF[index], vxTTCFse[index], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="skyblue", elinewidth=0.5, color="dodgerblue", label="TTCF")
         if not(onlyTTCF):
