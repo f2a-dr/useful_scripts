@@ -16,6 +16,7 @@ def profileRead(filename):
         profile = np.array(lines, dtype='double')
     return profile
 
+
 def globalRead(filename, varPosition):
     variable = []
     with open(filename) as f:
@@ -116,10 +117,10 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
             
         if average:
             avTTCF = np.mean(vxTTCF, axis=0)
-            seTTCF = np.sqrt(np.sum(vxTTCFse**2, axis=0)/len(vxTTCFse[0]))
+            # seTTCF = np.sqrt(np.sum(vxTTCFse**2, axis=0)/len(vxTTCFse[0]))
             if not(onlyTTCF):
                 avDAV = np.mean(vxDAV, axis=0)
-                seDAV = np.sqrt(np.sum(vxDAVse**2, axis=0)/len(vxDAVse[0]))
+                # seDAV = np.sqrt(np.sum(vxDAVse**2, axis=0)/len(vxDAVse[0]))
 
         binsN = np.linspace(0, len(vxTTCF[0]), len(vxTTCF[0]))
         centimeters = 1/2.54
@@ -129,8 +130,7 @@ def plotVelocity(folders, onlyTTCF=False, timeResponse=True, theoreticalProfiles
         ax.set_xlabel(r"Bins", fontsize=16)
         ax.set_ylabel(r"$v_{x}$, DPD units", fontsize=16)
         if average:
-            ax.errorbar(binsN, avTTCF, seTTCF, linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="skyblue", elinewidth=0.5, color="dodgerblue", label="TTCF")
-        # ax.plot(binsN, np.mean(vxTTCF, axis=0), color="dodgerblue", label="TTCF")
+            ax.plot(binsN, avTTCF, linewidth=0.5, marker="o", marskersize=1, color="dodgerblue", label="TTCF")
         else:
             ax.errorbar(binsN, vxTTCF[index], vxTTCFse[index], linestyle="", marker="o", markersize=1, capsize=2, capthick=0.5, ecolor="skyblue", elinewidth=0.5, color="dodgerblue", label="TTCF")
         if not(onlyTTCF):
