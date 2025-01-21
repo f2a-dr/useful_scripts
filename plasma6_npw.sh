@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+export DISPLAY=":0"
+export LC_TIME=C
+export LC_NUMERIC=C
 PicDir='/home/f2a/Immagini/wallpapers'
 
 # Grab random photo from PicDir
