@@ -1,0 +1,43 @@
+#!/bin/bash
+
+printf "=== Extracting equilibirum data ===\n"
+header="   Step"
+# foot="      1500"
+foot="1500"
+# foot="Loop time of "
+fileout="eqResults.dat"
+cp log.lammps ${fileout}
+
+## Extract the data of the equilibrium run
+sed -i '/'"$header"'/,$!d' ${fileout}
+# sed -i '/'"$foot"'/,$d' ${fileout} # Don't save the line that contains foot
+sed -i '/^[[:space:]]*'"$foot"'/q' ${fileout} # Saves the line that contains foot
+
+printf "=== Extracting nonequilibirum data ===\n"
+foot="1600"
+# foot="Loop time of "
+fileout="nonEqResults.dat"
+cp log.lammps ${fileout}
+
+runN=$( grep -E "^[[:space:]]*${header}" $fileout | wc -l)
+
+## Check if there is more the one run in the log.lammps file
+if [ $runN -gt 1 ]
+then
+	printf "#####################################################\n"
+	printf "### In the log file is present more than one run. ###\n"
+	printf "### By default only the data relative to the last ###\n"
+	printf "### one will be saved in the output file.         ###\n"
+	printf "#####################################################\n"
+
+	## Remove the header for all the run except the last
+	for (( i=1; i<$runN; i++ ))
+	do
+		sed -i '0,/'"$header"'/{/'"$header"'/d}' ${fileout}
+	done
+fi
+
+## Extract the data of the last run
+sed -i '/'"$header"'/,$!d' ${fileout}
+# sed -i '/'"$foot"'/,$d' ${fileout} # Don't save the line that contains foot
+sed -i '/^[[:space:]]*'"$foot"'/q' ${fileout} # Saves the line that contains foot
